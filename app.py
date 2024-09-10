@@ -49,7 +49,7 @@ def create_contact():
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
-        "X-API-Key": "ucih8jttqu1cnbozmwgaeazeci1mmfuxzw9pcl126frcnpihot2069hpitrp9yjv"  # Reemplaza con tu API Key
+        "X-API-Key": API_KEY
     }
 
     # Realiza la solicitud a la API de systeme.io
@@ -74,7 +74,7 @@ def addTag(contactId):
     payload = { "tagId": 1040049 }
     headers = {
     "content-type": "application/json",
-    "X-API-Key": "ucih8jttqu1cnbozmwgaeazeci1mmfuxzw9pcl126frcnpihot2069hpitrp9yjv"
+    "X-API-Key": API_KEY
 }
     response = requests.post(url, json=payload, headers=headers)
     if(response.status_code == 204):
