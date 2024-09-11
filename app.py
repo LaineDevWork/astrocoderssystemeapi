@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 import requests
 from flask_cors import CORS
 import os
+import hubspot
+from hubspot.crm.contacts import SimplePublicObjectInput, ApiException
+from hubspot.crm.contacts import Filter, FilterGroup
 
 app = Flask(__name__)
 CORS(app)
@@ -68,6 +71,35 @@ def create_contact():
         # Si hay un error, devuelve un mensaje
         return jsonify({"error": "No se pudo crear el contacto"}), response.status_code
     
+@app.route('/update_lead', methods=['POST'])
+def update_lead():
+     # Obtener el email de la solicitud
+    email = request.json.get('email')
+
+    if not email:
+        return jsonify({"error": "Falta el email del lead"}), 400
+
+    # Obtener el contact_id a partir del email
+    contact = client.crm.contacts.basic_api.get_by_id(email, id_property='email')
+    print(contact)
+    contact_id = contact.id
+
+    if not contact_id:
+        return jsonify({"error": "No se encontró ningún contacto con ese email"}), 404
+
+    # Definir las propiedades a actualizar
+    properties = {
+        "lifecyclestage": "840184806"
+    }
+    simple_public_object_input = SimplePublicObjectInput(properties=properties)
+
+    try:
+        # Intentar actualizar el contacto en HubSpot
+        api_response = client.crm.contacts.basic_api.update(contact_id=contact_id, simple_public_object_input=simple_public_object_input)
+        return jsonify({"message": "Lead actualizado correctamente", "contact_id": contact_id})
+    except ApiException as e:
+        # Si ocurre un error, devolver el mensaje de error
+        return jsonify({"error": f"Excepción al llamar a la API: {e}"}), 500    
 
 def addTag(contactId):
     url = f"https://api.systeme.io/api/contacts/{contactId}/tags"

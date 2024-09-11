@@ -2,3 +2,4 @@ Flask
 Gunicorn
 requests
 flask_cors
+hubspot-api-client
