@@ -18,7 +18,7 @@ def create_contact():
     # Obtiene los datos enviados desde el formulario en el frontend
     data = request.get_json()
     
-    nombre = data.get('nombre')
+    nombre = data.get('first_name')
     email = data.get('email')
 
     print(f"Nombre: {nombre}")
