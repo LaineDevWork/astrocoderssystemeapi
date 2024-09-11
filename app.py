@@ -12,6 +12,9 @@ CORS(app)
 API_KEY = os.getenv('SYSTEMEKEY')
 BASE_API_URL = 'https://api.systeme.io/api/'
 
+HUBSPOTKEY = os.getenv('HUBSPOTKEY')
+
+client = hubspot.Client.create(access_token=HUBSPOTKEY)
 @app.route('/')
 def index():
     return "Hello, World! This is the backend of the Astrocoders project. (And probably you shouldn't be here)"
